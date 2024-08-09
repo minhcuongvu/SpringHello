@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: springhello-service
+spec:
+  selector:
+    app: springhello
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 32000
+      name: serve
+    - protocol: TCP
+      port: 5005
+      targetPort: 5005
+      nodePort: 32005
+      name: debug
+  type: NodePort

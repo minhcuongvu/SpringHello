@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: certificate-installer
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: certificate-installer
+  template:
+    metadata:
+      labels:
+        app: certificate-installer
+    spec:
+      hostPID: true
+      hostNetwork: true
+      # initContainers:
+      # - name: certificate-installer
+      #   image: ubuntu:latest
+      #   securityContext:
+      #     privileged: true
+      #   command: [ 'sh' ]
+      #   args: 
+      #   - '-c'
+      #   - |
+      #     set -x  # Enable debugging
+      #     mkdir -p /etc/docker/certs.d/local.registry.com:32555 && 
+      #     cp /home/core/tls.crt /etc/docker/certs.d/local.registry.com:32555/local.registry.com.crt && 
+      #     cp /home/core/tls.key /etc/docker/certs.d/local.registry.com:32555/local.registry.com.key && 
+      #     apt update && apt-get install -qq -y ca-certificates mkcert curl tree && 
+      #     mkcert -install && 
+      #     tree /home/ && 
+      #     cp /home/ca-cert/rootCA.crt /usr/share/ca-certificates/ && 
+      #     cp /home/core/tls.crt /usr/share/ca-certificates/local.registry.com.crt && 
+      #     echo "rootCA.crt" | tee -a /etc/ca-certificates.conf && 
+      #     echo "local.registry.com.crt" | tee -a /etc/ca-certificates.conf &&
+      #     update-ca-certificates && 
+      #     nsenter --mount=/proc/1/ns/mnt -- sh -c "update-ca-certificates && systemctl restart containerd" && 
+      #     ls /etc/ssl/certs/ && 
+      #     curl -v https://local.registry.com:32555 &&
+      #     exec tail -f /dev/null
+      #   volumeMounts:
+      #   - name: etc-docker
+      #     mountPath: /etc/docker/certs.d
+      #   - name: certs-source
+      #     mountPath: /home/core/
+      #   - name: ca-cert-volume
+      #     mountPath: /home/ca-cert
+      terminationGracePeriodSeconds: 30
+      # volumes:
+      # - name: etc-docker
+      #   hostPath:
+      #     path: /etc/docker/certs.d
+      # - name: certs-source
+      #   secret:
+      #     secretName: registry-tls
+      # - name: ca-cert-volume
+      #   configMap:
+      #     name: ca-cert
+      containers:
+        - name: wait
+          image: k8s.gcr.io/pause:3.1

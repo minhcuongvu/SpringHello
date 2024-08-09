@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springhello-deployment
+  labels:
+    app: springhello
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springhello
+  template:
+    metadata:
+      labels:
+        app: springhello
+    spec:
+      # initContainers:
+      # - name: init-certs
+      #   image: ubuntu:latest
+      #   command: ['sh',
+      #     '-c',
+      #     'mkdir -p /etc/docker/certs.d/local.registry.com:32555/; cp /certs/tls.crt /etc/docker/certs.d/local.registry.com:32555/local.registry.com.crt && cp /certs/tls.key /etc/docker/certs.d/local.registry.com:32555/local.registry.com.key && ls /etc/docker/certs.d/local.registry.com:32555/ && cat /etc/docker/certs.d/local.registry.com:32555/local.registry.com.crt'
+      #   ]
+        # command: ['sh',
+        #   '-c',
+        #   'apt-get update -qq && apt-get install -qq -y curl openssl ca-certificates && cp /certs/tls.crt /usr/share/ca-certificates/local.registry.com.crt; echo "local.registry.com.crt" >> /etc/ca-certificates.conf;
+        #   update-ca-certificates && ls /etc/ssl/certs/; cat /etc/ca-certificates.conf;'
+        # ] # working, the new crt is added, but the main container still complains about unknown authority 
+        # volumeMounts:
+        # - name: certs-source
+        #   mountPath: /certs
+        # - name: docker-certs
+        #   mountPath: /etc/docker/certs.d
+      containers:
+      - name: springhello
+        image: local.registry.com:32555/springhello:latest
+        ports:
+        - containerPort: 8080
+          name: serve
+        - containerPort: 5005
+          name: debug
+        env:
+        - name: PORT
+          value: "8080"
+        # volumeMounts:
+        # - name: docker-certs
+        #   mountPath: /etc/docker/certs.d
+      imagePullSecrets:
+      - name: myregistrykey
+      # volumes:
+      # - name: certs-source
+      #   secret:
+      #     secretName: registry-tls
+      # - name: docker-certs
+      #   emptyDir: {}

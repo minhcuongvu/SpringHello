@@ -1,0 +1,24 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+  - role: control-plane
+    # extraMounts:
+    #   - containerPath: /etc/docker/certs.d/local.registry.com
+    #     hostPath: /etc/docker/certs.d/local.registry.com
+    extraPortMappings:
+    - containerPort: 32000
+      hostPort: 32000
+      protocol: TCP
+    - containerPort: 32005
+      hostPort: 32005
+      protocol: TCP
+    - containerPort: 32555
+      hostPort: 32555
+      protocol: TCP
+  - role: worker
+  - role: worker
+# containerdConfigPatches:
+#   - |-
+#     [plugins."io.containerd.grpc.v1.cri".registry.configs."local.registry.com".tls]
+#       cert_file = "/etc/docker/certs.d/local.registry.com/local.registry.com.crt"
+#       key_file  = "/etc/docker/certs.d/local.registry.com/local.registry.com.key"

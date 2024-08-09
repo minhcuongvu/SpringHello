@@ -1,0 +1,8 @@
+apiVersion: apps/v1
+kind: Secret
+metadata:
+  name: admin-user-token
+  namespace: kubernetes-dashboard
+type: kubernetes.io/service-account-token
+annotations:
+  kubernetes.io/service-account.name: admin-user

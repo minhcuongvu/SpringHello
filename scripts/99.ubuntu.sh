@@ -1,0 +1,1 @@
+docker run --rm -it ubuntu:latest /bin/bash
