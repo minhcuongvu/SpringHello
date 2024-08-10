@@ -31,3 +31,5 @@ build/
 
 *.pem
 certs/
+.exclude
+exclude/

@@ -1,58 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<!-- Properties section to define project-wide properties -->
+	<!-- Check version of dependencies on https://central.sonatype.com/ -->
+	<properties>
+		<!-- Java version being used in the project -->
+		<java.version>22</java.version>
+		<!-- Specify Spring version -->
+		<spring.version>6.0.11</spring.version>
+		<!-- Specify Spring version -->
+		<springboot.version>3.3.2</springboot.version>
+		<!-- JSON Web Token Library -->
+		<io.jsonwebtoken>0.12.6</io.jsonwebtoken>
+		<!-- org.projectlombok -->
+		<org.projectlombok>1.18.34</org.projectlombok>
+		<!-- jakarta.persistence -->
+		<jakarta.persistence>3.1.0</jakarta.persistence>
+		<!-- JDBC Type 4 driver for MySQL. -->
+		<com.mysql>9.0.0</com.mysql>
+		<!-- H2 Database Engine -->
+		<com.h2database>2.3.230</com.h2database>
+	</properties>
+
+	<!-- Specifies the version of the POM model being used -->
 	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Parent section defines the parent POM for Spring Boot -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.3.2</version>
 		<relativePath/>
 	</parent>
+
+	<!-- Group ID for the project, typically a reversed domain name -->
 	<groupId>com.example</groupId>
+	<!-- Artifact ID is the name of the project -->
 	<artifactId>SpringHello</artifactId>
+	<!-- Version of the project -->
 	<version>0.0.1-SNAPSHOT</version>
+	<!-- Name of the project displayed in the Maven repository -->
 	<name>SpringHello</name>
+	<!-- Description of the project -->
 	<description>Demo project for Spring Boot</description>
+	<!-- URL for the project (optional) -->
 	<url/>
+	<!-- Licenses section (optional) -->
 	<licenses>
 		<license/>
 	</licenses>
+	<!-- Developers section (optional) -->
 	<developers>
 		<developer/>
 	</developers>
+	<!-- Source Control Management section (optional) -->
 	<scm>
 		<connection/>
 		<developerConnection/>
 		<tag/>
 		<url/>
 	</scm>
-	<properties>
-		<java.version>22</java.version>
-	</properties>
+
+	<!-- Dependencies section where required libraries are declared -->
 	<dependencies>
+		<!-- Spring Boot DevTools for enhanced development experience -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
+			<version>${springboot.version}</version>
+			<!-- Optional dependency to improve development efficiency -->
 			<optional>true</optional>
 		</dependency>
-
+		<!-- Spring Boot Starter Web for building web applications -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${springboot.version}</version>
 		</dependency>
-
+		<!-- Spring Boot Data -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<version>${springboot.version}</version>
+		</dependency>
+		<!-- Spring Boot Starter Test for testing support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${springboot.version}</version>
+			<!-- Scope is set to test, meaning it will only be available in the test classpath -->
 			<scope>test</scope>
 		</dependency>
+		<!-- Spring Boot Starter Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${springboot.version}</version>
+		</dependency>
+
+		<!-- JSON Web Token Library -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${io.jsonwebtoken}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>${io.jsonwebtoken}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>${io.jsonwebtoken}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>${io.jsonwebtoken}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Spice up your java: Automatic Resource Management, automatic generation of getters, setters, equals, hashCode and toString, and more! -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${org.projectlombok}</version>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Eclipse Enterprise for Java (EE4J) is an open source initiative to create standard APIs, implementations of those APIs, and technology compatibility kits for Java runtimes that enable development, deployment, and management of server-side and cloud-native applications. -->
+		<dependency>
+			<groupId>jakarta.persistence</groupId>
+			<artifactId>jakarta.persistence-api</artifactId>
+			<version>${jakarta.persistence}</version>
+		</dependency>
+
+		<!-- JDBC Type 4 driver for MySQL. -->
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<version>${com.mysql}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- H2 Database Engine -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${com.h2database}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- <dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>6.5.2.Final</version>
+		</dependency> -->
+
+		<!-- End of dependencies -->
 	</dependencies>
 
+	<!-- Build section for project build configurations -->
 	<build>
+		<resources>
+			<resource>
+				<filtering>true</filtering>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*.properties</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
+			<!-- Spring Boot Maven Plugin for packaging and running Spring Boot applications -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${springboot.version}</version>
 			</plugin>
 		</plugins>
 	</build>
