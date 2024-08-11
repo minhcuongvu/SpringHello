@@ -40,9 +40,13 @@ public class AuthController {
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("message", "Invalid username or password."));
         } catch (LockedException e) {
-            throw e;
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "An error occurred during login."));
         } catch (DisabledException e) {
-            throw e;
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "An error occurred during login."));
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
