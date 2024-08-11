@@ -1,12 +1,13 @@
 #!/bin/bash
-# helm repo add grafana https://grafana.github.io/helm-charts
-# helm repo update
-helm uninstall loki
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+# helm uninstall loki
 # helm install --values loki-distributed.yaml loki grafana/loki
 # helm upgrade loki grafana/loki --values loki-distributed.yaml
 
 # install=====
-helm install --values loki-scalable.yaml loki grafana/loki
+kubectl create namespace loki
+helm install --values loki-scalable.yaml loki grafana/loki --namespace loki
 # update=======
 # helm upgrade loki grafana/loki --values loki-scalable.yaml
 
@@ -22,6 +23,9 @@ helm install --values loki-scalable.yaml loki grafana/loki
 
 # grafana
 # make sure datasource connection has the header contains 'X-Scope-OrgId' and value 'foo'
-# kubectl create namespace monitoring
+kubectl create namespace monitoring
+# helm delele my-grafana
+helm install my-grafana grafana/grafana --namespace monitoring
 # kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 # export POD_NAME=$(kubectl get pods --namespace monitoring -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=my-grafana" -o jsonpath="{.items[0].metadata.name}")
+# kubectl --namespace monitoring port-forward $POD_NAME 3000 &

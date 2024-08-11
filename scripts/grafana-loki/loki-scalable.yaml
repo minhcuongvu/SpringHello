@@ -9,10 +9,6 @@ loki:
         index:
           prefix: loki_index_
           period: 24h
-        gateway: 
-          enabled: true
-          basicAuth:
-            enabled: false
   ingester:
     chunk_encoding: snappy
   tracing:

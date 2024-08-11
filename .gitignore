@@ -33,4 +33,5 @@ build/
 certs/
 .exclude
 exclude/
+excludes/
 *.secret
