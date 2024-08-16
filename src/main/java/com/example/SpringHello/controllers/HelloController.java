@@ -17,7 +17,7 @@ import lombok.AllArgsConstructor;
 public class HelloController {
 
   @Autowired
-  private KafkaProducerService kafkaProducerService;
+  KafkaProducerService kafkaProducerService;
 
   @GetMapping("/api/hello")
   public Map<String, Object> sayHello(@RequestParam(value = "q", defaultValue = "World") String name) {

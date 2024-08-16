@@ -4,3 +4,5 @@
 - multiple nodes
 - dashboard
 - fast development workflow
+- kafka+prometheus for event messaging
+- grafana+loki for application logging
