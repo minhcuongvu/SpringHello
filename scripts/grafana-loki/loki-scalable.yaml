@@ -1,4 +1,6 @@
 # https://grafana.com/docs/loki/latest/setup/install/helm/install-scalable/
+
+# http://loki-gateway.loki.svc.cluster.local/
 loki:
   schemaConfig:
     configs:

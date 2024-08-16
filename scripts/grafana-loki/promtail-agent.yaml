@@ -2,5 +2,5 @@
 config:
 # publish data to loki
   clients:
-    - url: http://loki-gateway.default.svc.cluster.local/loki/api/v1/push
+    - url: http://loki-gateway.loki.svc.cluster.local/loki/api/v1/push
       tenant_id: 1
