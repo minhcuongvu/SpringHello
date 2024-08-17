@@ -68,6 +68,12 @@
 
 	<!-- Dependencies section where required libraries are declared -->
 	<dependencies>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+
 		<!-- Spring Boot DevTools for enhanced development experience -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
