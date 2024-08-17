@@ -28,7 +28,7 @@ public class HelloController {
   @GetMapping("/api/hello")
   public Map<String, Object> sayHello(@RequestParam(value = "q", defaultValue = "World") String name) {
     Map<String, Object> response = new HashMap<>();
-    response.put("message", "hello, 322 " + name + " nocap");
+    response.put("message", "hello, 69420 " + name + " nocap frfr");
     String pod = getPodName();
     response.put("podName", pod);
     // kafkaProducerService.sendMessage("Hello kafka");

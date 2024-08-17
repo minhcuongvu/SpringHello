@@ -6,10 +6,10 @@ RUN apt-get update \
 WORKDIR /app
 
 # Copy only the Maven configuration files and download dependencies
-COPY pom.xml .
-COPY .mvn/ ./.mvn/
-COPY mvnw .
-COPY mvnw.cmd .
+COPY pom.xml pom.xml
+COPY .mvn/ .mvn/
+COPY mvnw mvnw
+COPY mvnw.cmd mvnw.cmd
 # COPY . .
 
 RUN chmod 0755 ./mvnw
@@ -21,7 +21,7 @@ RUN chmod 0755 ./mvnw
 # Copy the rest of the application code
 RUN ./mvnw clean install
 
-COPY src/ ./src/
+COPY src/ src/
 
 # RUN ./mvnw clean install -o -Dmaven.test.skip=true
 # development/debug mode at 5005
