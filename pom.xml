@@ -79,10 +79,10 @@
 			<version>${springboot.version}</version>
 		</dependency>
 		<!-- Spring Boot Data -->
+		<!-- org.springframework.data:spring-data-jdbc -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>${springboot.version}</version>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
 		<!-- Spring Boot Starter Test for testing support -->
 		<dependency>
@@ -139,20 +139,20 @@
 		</dependency>
 
 		<!-- JDBC Type 4 driver for MySQL. -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<version>${com.mysql}</version>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 		<!-- H2 Database Engine -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${com.h2database}</version>
 			<scope>runtime</scope>
-		</dependency>
+		</dependency> -->
 
 		<!-- Kafka -->
 		<dependency>
@@ -164,8 +164,15 @@
 		<!-- <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>6.5.2.Final</version>
+			<version>7.0.0.Beta1</version>
 		</dependency> -->
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.7.3</version>
+			<scope>runtime</scope>
+		</dependency>
 
 		<!-- End of dependencies -->
 	</dependencies>
@@ -187,6 +194,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${springboot.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

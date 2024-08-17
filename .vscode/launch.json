@@ -3,6 +3,12 @@
   "configurations": [
     {
       "type": "java",
+      "name": "Launch Java Program",
+      "request": "launch",
+      "mainClass": "com.example.SpringHello.SpringHelloApplication"
+    },
+    {
+      "type": "java",
       "name": "Attach",
       "request": "attach",
       "hostName": "127.0.0.1",

@@ -42,12 +42,16 @@ spec:
         env:
         - name: PORT
           value: "8080"
-        # volumeMounts:
-        # - name: docker-certs
-        #   mountPath: /etc/docker/certs.d
+        volumeMounts:
+        - name: host-storage
+          mountPath: /app
       imagePullSecrets:
       - name: myregistrykey
-      # volumes:
+      volumes:
+      - name: host-storage
+        hostPath:
+          path: /home/adrian/repos/SpringHello/
+          # type: Directory
       # - name: certs-source
       #   secret:
       #     secretName: registry-tls

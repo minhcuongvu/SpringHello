@@ -1,13 +1,53 @@
 package com.example.SpringHello.repositories;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import com.example.SpringHello.models.User;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+@Repository
+public class UserRepository {
 
-import com.example.SpringHello.jpa.User;
+    @Autowired
+    private final JdbcTemplate jdbcTemplate;
 
-public interface UserRepository extends JpaRepository<User, Long> {
-  Optional<User> findByUsernameOrEmail(String username, String email);
+    public UserRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
-  Optional<User> findByUsername(String username);
+    public Optional<User> findByUsername(String username) {
+        String sql = "SELECT id, username, email, password FROM users WHERE username = ? LIMIT 1;";
+        return queryForObject(sql, new UserRowMapper(), username);
+    }
+
+    public class UserRowMapper implements RowMapper<User> {
+
+        @Override
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            User user = new User();
+            user.setId(rs.getLong("id"));
+            user.setUsername(rs.getString("username"));
+            user.setEmail(rs.getString("email"));
+            user.setPassword(rs.getString("password"));
+            return user;
+        }
+    }
+
+    // You can use this method for other queries with different parameters
+    private <T> Optional<T> queryForObject(String sql, RowMapper<T> rowMapper, Object... params) {
+        try {
+            T result = jdbcTemplate.queryForObject(sql, rowMapper, params);
+            return Optional.ofNullable(result);
+        } catch (Exception e) {
+            // Handle exception if necessary
+            return Optional.empty();
+        }
+    }
 }
