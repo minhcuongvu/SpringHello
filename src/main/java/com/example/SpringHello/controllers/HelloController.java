@@ -32,7 +32,7 @@ public class HelloController {
     String pod = getPodName();
     response.put("podName", pod);
     // kafkaProducerService.sendMessage("Hello kafka");
-    Optional<User> user = userRepository.findByUsername("bob");
+    Optional<User> user = userRepository.findByUsername(name);
     response.put("user", user);
     return response;
   }
