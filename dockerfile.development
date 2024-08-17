@@ -12,16 +12,16 @@ COPY mvnw mvnw
 COPY mvnw.cmd mvnw.cmd
 # COPY . .
 
-RUN chmod 0755 ./mvnw
+# RUN chmod 0755 ./mvnw
 
 # Download Maven dependencies
 # RUN ./mvnw dependency:go-offline
 # RUN ./mvnw clean install
 
 # Copy the rest of the application code
-RUN ./mvnw clean install
 
 COPY src/ src/
+RUN ./mvnw clean install
 
 # RUN ./mvnw clean install -o -Dmaven.test.skip=true
 # development/debug mode at 5005

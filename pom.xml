@@ -202,6 +202,14 @@
 				</includes>
 			</resource>
 		</resources>
+		<plugins>
+			<!-- Spring Boot Maven Plugin for packaging and running Spring Boot applications -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${springboot.version}</version>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
