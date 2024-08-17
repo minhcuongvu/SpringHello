@@ -27,9 +27,6 @@ import lombok.AllArgsConstructor;
 public class SecurityConfig {
 
   @Autowired
-  private UserDetailsService userDetailsService;
-
-  @Autowired
   private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
   @Bean

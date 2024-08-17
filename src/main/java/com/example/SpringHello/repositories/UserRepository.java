@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.SpringHello.models.User;
@@ -18,6 +19,9 @@ public class UserRepository {
     @Autowired
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UserRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -25,6 +29,10 @@ public class UserRepository {
     public Optional<User> findByUsername(String username) {
         String sql = "SELECT id, username, email, password FROM users WHERE username = ? LIMIT 1;";
         return queryForObject(sql, new UserRowMapper(), username);
+    }
+
+    public String encodePassword(String plainPassword) {
+        return passwordEncoder.encode(plainPassword);
     }
 
     public class UserRowMapper implements RowMapper<User> {
@@ -36,6 +44,7 @@ public class UserRepository {
             user.setUsername(rs.getString("username"));
             user.setEmail(rs.getString("email"));
             user.setPassword(rs.getString("password"));
+            user.setPassword(encodePassword(user.getPassword()));
             return user;
         }
     }
