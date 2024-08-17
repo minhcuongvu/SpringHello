@@ -6,8 +6,8 @@ public class User {
     private Long id;
     private String username;
     private String email;
-    private String password; // Ensure you have this field
-    private Set<Role> roles; // Ensure you have this field
+    private String password;
+    private Set<Role> roles;
 
     // Constructor
     public User(Long id, String username, String email, String password) {
