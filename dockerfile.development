@@ -6,17 +6,28 @@ RUN apt-get update \
 WORKDIR /app
 
 # Copy only the Maven configuration files and download dependencies
-COPY pom.xml ./
-COPY .mvn .mvn
-COPY mvnw mvnw
-COPY mvnw.cmd mvnw.cmd
+COPY pom.xml .
+COPY .mvn/ ./.mvn/
+COPY mvnw .
+COPY mvnw.cmd .
+# COPY . .
+
+RUN chmod 0755 ./mvnw
 
 # Download Maven dependencies
-RUN ./mvnw dependency:go-offline
+# RUN ./mvnw dependency:go-offline
+# RUN ./mvnw clean install
 
 # Copy the rest of the application code
-COPY src ./src
-
 RUN ./mvnw clean install
+
+COPY src/ ./src/
+
+# RUN ./mvnw clean install -o -Dmaven.test.skip=true
 # development/debug mode at 5005
+
+# ENTRYPOINT ["/app/mvnw", "spring-boot:run"]
+# CMD ["-Dspring-boot.run.jvmArguments=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"]
+
+# CMD ["./mvnw", "spring-boot:run"]
 CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.jvmArguments=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005\""]
