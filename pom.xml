@@ -208,6 +208,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${springboot.version}</version>
+				<configuration>
+					<mainClass>com.example.SpringHello.SpringHelloApplication</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -11,9 +11,11 @@ import com.example.SpringHello.models.Role;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Optional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 @Repository
@@ -33,7 +35,10 @@ public class RoleRepository {
         INNER JOIN user_roles ur ON r.id = ur.role_id
         WHERE r.user_id = ?
             """;
-    List<Role> roleList = query(sql, new RoleRowMapper(), userId).orElseGet(() -> new ArrayList<>());
+    String cleanedSql = sql.stripIndent().replace("\n", " ").strip();
+    System.out.println("Used parameter(s) from previous SQL statement: " + formatParameters("userId", userId));
+
+    List<Role> roleList = query(cleanedSql, new RoleRowMapper(), userId).orElseGet(() -> new ArrayList<>());
     return new HashSet<>(roleList);
   }
 
@@ -55,5 +60,23 @@ public class RoleRepository {
       role.setName(rs.getString("role_name"));
       return role;
     }
+  }
+
+  private String formatParameters(Object... params) {
+    return Arrays.stream(params)
+        .map(param -> param instanceof List<?> ? formatList((List<?>) param) : formatParam(param))
+        .collect(Collectors.joining(", ", "[", "]"));
+  }
+
+  private String formatParam(Object param) {
+    if (param == null)
+      return "NULL";
+    return "'" + param.toString() + "'";
+  }
+
+  private String formatList(List<?> list) {
+    return list.stream()
+        .map(this::formatParam)
+        .collect(Collectors.joining(", ", "[", "]"));
   }
 }

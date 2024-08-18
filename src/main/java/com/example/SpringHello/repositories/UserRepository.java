@@ -11,7 +11,10 @@ import com.example.SpringHello.models.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
@@ -33,7 +36,10 @@ public class UserRepository {
                 WHERE username = ?
                 LIMIT 1;
                 """;
-        return queryForObject(sql, new UserRowMapper(), username);
+        String cleanedSql = sql.stripIndent().replace("\n", " ").strip();
+        System.out.println("Used parameter(s) from previous SQL statement: " + formatParameters("username", username));
+
+        return queryForObject(cleanedSql, new UserRowMapper(), username);
     }
 
     public String encodePassword(String plainPassword) {
@@ -62,5 +68,23 @@ public class UserRepository {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    private String formatParameters(Object... params) {
+        return Arrays.stream(params)
+                .map(param -> param instanceof List<?> ? formatList((List<?>) param) : formatParam(param))
+                .collect(Collectors.joining(", ", "[", "]"));
+    }
+
+    private String formatParam(Object param) {
+        if (param == null)
+            return "NULL";
+        return "'" + param.toString() + "'";
+    }
+
+    private String formatList(List<?> list) {
+        return list.stream()
+                .map(this::formatParam)
+                .collect(Collectors.joining(", ", "[", "]"));
     }
 }
