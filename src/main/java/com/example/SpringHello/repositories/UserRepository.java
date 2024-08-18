@@ -27,7 +27,12 @@ public class UserRepository {
     }
 
     public Optional<User> findByUsername(String username) {
-        String sql = "SELECT id, username, email, password FROM users WHERE username = ? LIMIT 1;";
+        String sql = """
+                SELECT id, username, email, password
+                FROM users
+                WHERE username = ?
+                LIMIT 1;
+                """;
         return queryForObject(sql, new UserRowMapper(), username);
     }
 
@@ -49,13 +54,12 @@ public class UserRepository {
         }
     }
 
-    // You can use this method for other queries with different parameters
+    // TODO: add this to a class of generic functions
     private <T> Optional<T> queryForObject(String sql, RowMapper<T> rowMapper, Object... params) {
         try {
             T result = jdbcTemplate.queryForObject(sql, rowMapper, params);
             return Optional.ofNullable(result);
         } catch (Exception e) {
-            // Handle exception if necessary
             return Optional.empty();
         }
     }

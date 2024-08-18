@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Set;
 import java.util.List;
+import java.util.Optional;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 @Repository
@@ -25,10 +27,24 @@ public class RoleRepository {
   }
 
   public Set<Role> getByUserId(Long userId) {
-    String sql = "SELECT id, user_id, role FROM user_roles "
-        + "WHERE user_id = ?";
-    List<Role> roleList = jdbcTemplate.query(sql, new RoleRowMapper(), userId);
-    return new HashSet<>(roleList); // Convert List to Set
+    String sql = """
+        SELECT r.id, r.user_id, r.role_name
+        FROM roles r
+        INNER JOIN user_roles ur ON r.id = ur.role_id
+        WHERE r.user_id = ?
+            """;
+    List<Role> roleList = query(sql, new RoleRowMapper(), userId).orElseGet(() -> new ArrayList<>());
+    return new HashSet<>(roleList);
+  }
+
+  // TODO: add this to a class of generic functions
+  private <T> Optional<List<T>> query(String sql, RowMapper<T> rowMapper, Object... params) {
+    try {
+      List<T> results = jdbcTemplate.query(sql, rowMapper, params);
+      return Optional.ofNullable(results);
+    } catch (Exception e) {
+      return Optional.empty();
+    }
   }
 
   private static class RoleRowMapper implements RowMapper<Role> {
@@ -36,7 +52,7 @@ public class RoleRepository {
     public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
       Role role = new Role();
       role.setId(rs.getLong("id"));
-      role.setName(rs.getString("role"));
+      role.setName(rs.getString("role_name"));
       return role;
     }
   }

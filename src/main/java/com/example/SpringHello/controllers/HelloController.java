@@ -38,7 +38,7 @@ public class HelloController {
     response.put("message", "hello, 69420 " + name + " nocap frfr og");
     String pod = getPodName();
     response.put("podName", pod);
-    // kafkaProducerService.sendMessage("Hello kafka");
+    kafkaProducerService.sendMessage("Hello kafka");
     Optional<User> user = userRepository.findByUsername(name);
     if (user.isPresent()) {
       Set<Role> userRoles = roleRepository.getByUserId(user.get().getId());
