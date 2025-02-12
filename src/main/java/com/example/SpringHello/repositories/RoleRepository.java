@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.List;
-import java.util.Optional;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
@@ -30,25 +28,21 @@ public class RoleRepository {
 
   public Set<Role> getByUserId(Long userId) {
     String sql = """
-        SELECT r.id, r.user_id, r.role_name
+        SELECT r.id, r.name
         FROM roles r
         INNER JOIN user_roles ur ON r.id = ur.role_id
-        WHERE r.user_id = ?
-            """;
-    String cleanedSql = sql.stripIndent().replace("\n", " ").strip();
+        WHERE ur.user_id = ?
+        """;
+
     System.out.println("Used parameter(s) from previous SQL statement: " + formatParameters("userId", userId));
 
-    List<Role> roleList = query(cleanedSql, new RoleRowMapper(), userId).orElseGet(() -> new ArrayList<>());
-    return new HashSet<>(roleList);
-  }
-
-  // TODO: add this to a class of generic functions
-  private <T> Optional<List<T>> query(String sql, RowMapper<T> rowMapper, Object... params) {
     try {
-      List<T> results = jdbcTemplate.query(sql, rowMapper, params);
-      return Optional.ofNullable(results);
+      List<Role> roleList = jdbcTemplate.query(sql, new RoleRowMapper(), userId);
+      return new HashSet<>(roleList);
     } catch (Exception e) {
-      return Optional.empty();
+      System.err.println("Error fetching roles for userId: " + userId);
+      e.printStackTrace();
+      return new HashSet<>();
     }
   }
 
@@ -57,7 +51,7 @@ public class RoleRepository {
     public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
       Role role = new Role();
       role.setId(rs.getLong("id"));
-      role.setName(rs.getString("role_name"));
+      role.setName(rs.getString("name"));
       return role;
     }
   }
