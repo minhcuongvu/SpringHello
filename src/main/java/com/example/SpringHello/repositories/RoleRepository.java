@@ -33,11 +33,12 @@ public class RoleRepository {
         INNER JOIN user_roles ur ON r.id = ur.role_id
         WHERE ur.user_id = ?
         """;
+    String cleanedSql = sql.stripIndent().replace("\n", " ").strip();
 
     System.out.println("Used parameter(s) from previous SQL statement: " + formatParameters("userId", userId));
 
     try {
-      List<Role> roleList = jdbcTemplate.query(sql, new RoleRowMapper(), userId);
+      List<Role> roleList = jdbcTemplate.query(cleanedSql, new RoleRowMapper(), userId);
       return new HashSet<>(roleList);
     } catch (Exception e) {
       System.err.println("Error fetching roles for userId: " + userId);
