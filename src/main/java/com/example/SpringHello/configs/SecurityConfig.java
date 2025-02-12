@@ -50,7 +50,7 @@ public class SecurityConfig {
           authorize.requestMatchers("/api/hello").permitAll();
           authorize.requestMatchers("/api/nope").denyAll();
           authorize.requestMatchers("/api/auth/super").hasRole("Bob");
-          authorize.requestMatchers("/api/auth/**").authenticated();
+          // authorize.requestMatchers("/api/auth/**").authenticated();
           authorize.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
           // authorize.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
           // authorize.anyRequest().authenticated();

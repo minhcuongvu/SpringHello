@@ -21,37 +21,37 @@ import com.example.SpringHello.services.AuthService;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+  @Autowired
+  private AuthService authService;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
-        try {
-            // Attempt to authenticate the user
-            String token = authService.login(loginDto);
+  @PostMapping("/login")
+  public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
+    try {
+      // Attempt to authenticate the user
+      String token = authService.login(loginDto);
 
-            // Create the response for successful login
-            JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-            jwtAuthResponse.setAccessToken(token);
+      // Create the response for successful login
+      JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
+      jwtAuthResponse.setAccessToken(token);
 
-            return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
-        } catch (BadCredentialsException e) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("message", "Invalid username or password."));
-        } catch (LockedException e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "An error occurred during login."));
-        } catch (DisabledException e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "An error occurred during login."));
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("message", "An error occurred during login."));
-        }
+      return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+    } catch (BadCredentialsException e) {
+      return ResponseEntity
+          .status(HttpStatus.UNAUTHORIZED)
+          .body(Map.of("message", "Invalid username or password."));
+    } catch (LockedException e) {
+      return ResponseEntity
+          .status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Map.of("message", "An error occurred during login."));
+    } catch (DisabledException e) {
+      return ResponseEntity
+          .status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Map.of("message", "An error occurred during login."));
+    } catch (Exception e) {
+      return ResponseEntity
+          .status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body(Map.of("message", "An error occurred during login."));
     }
+  }
 
 }
